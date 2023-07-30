@@ -1,14 +1,18 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const hbs = require("hbs")
 
 // console.log(path.join(__dirname,"../public"))
-const staticpath = path.join(__dirname,"../views");
+const templatepath = path.join(__dirname,"../template/views");
+const partialsPath = path.join(__dirname,"../template/partials");
+hbs.registerPartials(partialsPath);
+
 
 //built in MiddleWare:
 // app.use(express.static(staticpath))
 
-app.set("views",staticpath)
+app.set("views",templatepath)
 app.set("view engine", "hbs");
 
 app.get("/",(req,res)=>{
