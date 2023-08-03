@@ -1,16 +1,14 @@
 const express = require("express");
 
-const app = express();
-require("./db/conn")
-const Student = require("./models/students")
-const router = require("./routers/students")
+const router = new express.Router();
 
-const port = process.env.PORT || 3000;
-app.use(express.json());
+const Student = require("../models/students")
 
-app.use(router);
+router.get("/thapa",(req,res)=>{
+    res.send("hello guys")
+});
 
-app.post("/students", async (req,res)=>{
+router.post("/students", async (req,res)=>{
     //// console.log(req.body);
     try{
         const user =  new Student(req.body);
@@ -21,7 +19,7 @@ app.post("/students", async (req,res)=>{
     }   
 })
 //get data from mongo.....
-app.get("/students", async(req,res)=>{
+router.get("/students", async(req,res)=>{
     try{
         const studentData = await Student.find();
         res.send(studentData);
@@ -32,7 +30,7 @@ app.get("/students", async(req,res)=>{
 
 //get indivisual data by using id .......
 
-app.get("/students/:id", async(req,res)=>{
+router.get("/students/:id", async(req,res)=>{
     try{
         const _id = req.params.id;
         const studentData = await Student.findById({_id : _id});
@@ -42,7 +40,7 @@ app.get("/students/:id", async(req,res)=>{
     }
 })
 
-app.patch("/students/:id", async(req,res)=>{
+router.patch("/students/:id", async(req,res)=>{
     try{
         const _id = req.params.id;
         const studentData = await Student.findByIdAndUpdate({_id : _id},req.body, {
@@ -54,7 +52,7 @@ app.patch("/students/:id", async(req,res)=>{
     }
 })
 
-app.delete("/students/:id", async(req,res)=>{
+router.delete("/students/:id", async(req,res)=>{
     try{
         const _id = req.params.id;
         const studentData = await Student.findByIdAndDelete(_id);
@@ -64,6 +62,5 @@ app.delete("/students/:id", async(req,res)=>{
     }
 })
 
-app.listen(port,()=>{
-    console.log(`connection is setup at ${port}`);
-})
+module.exports = router;
+
